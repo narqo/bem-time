@@ -1,4 +1,3 @@
 ({
-    mustDeps : { block : 'i-bem', elems : 'dom' },
-    shouldDeps : 'iso8601'
+    mustDeps : { block : 'i-bem', elems : 'dom' }
 })

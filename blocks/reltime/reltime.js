@@ -1,46 +1,53 @@
 modules.define('reltime',
-    ['i-bem__dom', 'tick', 'datetime'],
-    function(provide, bemDom, tick, _) {
+    ['i-bem__dom', 'tick', 'next-tick', 'datetime'],
+    function(provide, bemDom, tick, nextTick, _) {
 
 var TICK_INTERVAL = 6000,
-    lastTickTime = 0,
     instances = [],
+    lastTickTime = 0,
     boundToTick = false,
     bindToTick = function() {
         boundToTick = true;
-        tick
-            .on('tick', update)
-            .start();
+        tick.on('tick', update).start();
+    },
+    unbindFromTick = function() {
+        tick.un('tick', update).stop();
+        boundToTick = false;
     },
     update = function() {
-        var curTime = +new Date(),
-            tickTime = Math.floor(curTime / TICK_INTERVAL);
+        var timestamp = Date.now(),
+            tickTime = Math.floor(timestamp / TICK_INTERVAL);
         if(tickTime > lastTickTime) {
-            var instance, i = 0;
-            while(instance = instances[i++]) {
-                instance._tick(curTime);
-            }
+            scheduleUpdate(function() {
+                var instance, i = 0;
+                while(instance = instances[i++]) {
+                    instance._onTick(timestamp);
+                }
+            });
             lastTickTime = tickTime;
         }
-    };
+    },
+    scheduleUpdate = requestAnimationFrame ||
+        mozRequestAnimationFrame ||
+        webkitRequestAnimationFrame ||
+        oRequestAnimationFrame ||
+        function(fn) {
+            nextTick(fn.bind(null, Date.now()));
+        };
 
 provide(bemDom.decl(this.name, {
     onSetMod : {
         'js' : {
             'inited' : function() {
                 this._datetime = this.findBlockOn('datetime');
-
                 boundToTick || (bindToTick());
-
-                this._instanceIndex = instances.push(this) - 1;
+                instances.push(this);
             },
 
             '' : function() {
-                // удаляем из общего массива instances
-                instances.splice(this._instanceIndex, 1);
-                // понижаем _instanceIndex всем тем кто был добавлен в instances после нас
-                var i = this._instanceIndex, instance;
-                while(instance = instances[i++]) --instance._instanceIndex;
+                var idx = instances.indexOf(this);
+                idx === -1 || instances.splice(idx, 1);
+                instances.length || unbindFromTick();
             }
         }
     },
@@ -54,9 +61,9 @@ provide(bemDom.decl(this.name, {
         return this;
     },
 
-    _tick : function(curTime) {
+    _onTick : function(timestamp) {
         // TODO: format + update content
-        this.domElem.text(this.getVal());
+        this.domElem.text(timestamp);
         this.emit('tick');
     }
 }));

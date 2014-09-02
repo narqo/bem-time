@@ -13,7 +13,7 @@ trim_trailing_whitespace = true
 [*.json]
 indent_size = 2
 
-[{.bowerrc}]
+[{.bowerrc,.jshintrc}]
 indent_size = 2
 
 [{GNUmakefile,Makefile}]

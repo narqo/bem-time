@@ -1,11 +1,11 @@
 block('datetime')(
     tag()('time'),
-
     js()(true),
-
     attrs()(function() {
+        var ctx = this.ctx;
         return {
-            datetime : this.ctx.val
+            datetime : ctx.val,
+            title : ctx.title
         };
     })
 )

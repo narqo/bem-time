@@ -1,45 +1,52 @@
-modules.define('datetime', ['i-bem__dom', 'iso8601'], function(provide, bemDom, iso8601) {
+/** @module datetime */
 
-provide(bemDom.decl(this.name, {
+modules.define('datetime', ['i-bem__dom'], function(provide, bemDom) {
+
+/**
+ * @export
+ * @class datetime
+ * @bem
+ */
+provide(bemDom.decl(this.name, /** @lends datetime.prototype */{
     onSetMod : {
         'js' : {
             'inited' : function() {
-                this._val = this.domElem.attr('datetime');
-                this._date = this._val? iso8601.deserialize(this._val) : null;
+                // `datetime` must contains ISO 8601 formatted timestamp
+                this._val = this._parseStrVal(this.domElem.attr('datetime'));
             }
         }
     },
 
+    /**
+     * @returns {Date}
+     */
     getVal : function() {
         return this._val;
     },
 
+    /**
+     * @param {Date|String} val Date object or ISO 8601 formatted timestamp
+     * @returns {datetime} this
+     */
     setVal : function(val) {
-        var dateObj,
-            isChanged = false;
-
         if(typeof val === 'string') {
-            if(this._val !== val) {
-                dateObj = iso8601.deserialize(val);
-                isChanged = true;
-            }
-        } else {
-            if(this._date !== val) {
-                dateObj = val;
-                val = iso8601.serialize(dateObj);
-                isChanged = true;
-            }
+            val = this._parseStrVal(val);
         }
 
-        if(isChanged) {
+        // check, if two Date objects are equal by value
+        if(!(this._val - val)) {
             this._val = val;
-            this._date = dateObj;
             this.emit('change');
         }
 
         return this;
+    },
+
+    _parseStrVal : function(val) {
+        val = new Date(Date.parse(val));
+        return (val && !isNaN(val))? val : null;
     }
-}, {
+}, /** @lends datetime */{
     live : true
 }));
 

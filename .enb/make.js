@@ -1,26 +1,41 @@
-var levels = require('enb/techs/levels'),
+var path = require('path'),
+    levels = require('enb/techs/levels'),
+    files = require('enb/techs/files'),
     fileProvider = require('enb/techs/file-provider'),
+    fileCopy = require('enb/techs/file-copy'),
     bemdecl = require('enb/techs/bemdecl-from-bemjson'),
     deps = require('enb/techs/deps'),
-    files = require('enb/techs/files'),
-    bh = require('enb-bh/techs/bh-server-include'),
-    html = require('enb-bh/techs/html-from-bemjson');
+    bh = require('enb-bh/techs/bh-server'),
+    html = require('enb-bh/techs/html-from-bemjson'),
+    modules = require('enb-modules/techs/prepend-modules'),
+    js = require('enb-diverse-js/techs/browser-js');
 
 module.exports = make;
 
 function make(config) {
-    config.nodes('tests/*', function(nodeConfig) {
-        addTech = addTech.bind(null, nodeConfig);
+    config.node('tests/reltime/simple', function(nodeConfig) {
+        var src = 'blocks/reltime/reltime.tests/simple.bemjson.js',
+            simpleSrc = path.relative(nodeConfig.getNodePath(), config.resolvePath(src)),
+            tech = addTech.bind(null, nodeConfig);
 
-        addTech(levels, { levels : getLevels(config) });
-        addTech(fileProvider, { target : '?.bemjson.js' });
-        addTech(bemdecl);
-        addTech(deps);
-        addTech(files);
-        addTech(bh, { jsAttrName : 'data-bem', jsAttrScheme : 'json', sourceSuffixes : ['bh.js'] });
-        addTech(html);
+        tech(fileProvider, { target : simpleSrc });
+        tech(fileCopy, { sourceTarget : simpleSrc, destTarget : '?.bemjson.js' });
+    });
 
-        nodeConfig.addTargets(['?.html']);
+    config.nodes('tests/*/*', function(nodeConfig) {
+        var tech = addTech.bind(null, nodeConfig);
+
+        tech(levels, { levels : getLevels(config) });
+        //tech(fileProvider, { target : '?.bemjson.js' });
+        tech(bemdecl);
+        tech(deps);
+        tech(files);
+        tech(bh, { jsAttrName : 'data-bem', jsAttrScheme : 'json', sourceSuffixes : ['bh.js'] });
+        tech(html);
+        tech(js);
+        tech(modules, { source : '?.browser.js', target : '_?.js' });
+
+        nodeConfig.addTargets(['?.html', '_?.js']);
     });
 }
 

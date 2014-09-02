@@ -1,7 +1,6 @@
 module.exports = function(bh) {
-
     bh.match('reltime', function(ctx, json) {
-        var mix = { block : reltime, js : ctx.js() || true },
+        var mix = { block : 'reltime', js : ctx.js() || true },
             mixBlock = ctx.mix();
 
         if(mixBlock) {
@@ -11,8 +10,8 @@ module.exports = function(bh) {
         return {
             block : 'datetime',
             mix : mix,
+            title : json.title,
             val : json.val
         };
     });
-
 };

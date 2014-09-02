@@ -11,6 +11,7 @@ block('reltime').def()(function() {
     applyCtx({
         block : 'datetime',
         mix : mix,
+        title : json.title,
         val : ctx.val
     });
 });

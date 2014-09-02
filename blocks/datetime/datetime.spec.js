@@ -41,17 +41,17 @@ describe('select', function() {
 
         it('should emit "change" event on value change', function() {
             var spy = sinon.spy();
-            datetime.on('change', spy);
-
-            datetime.setVal('2014-09-02');
+            datetime
+                .on('change', spy)
+                .setVal('2014-09-02');
             spy.should.have.been.called;
         });
 
         it('should not emit "change" event if value have not changed', function() {
             var spy = sinon.spy();
-            datetime.on('change', spy);
-
-            datetime.setVal(datetimeVal);
+            datetime
+                .on('change', spy)
+                .setVal(datetimeVal);
             spy.should.not.have.been.called;
         });
     });
