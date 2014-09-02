@@ -1,0 +1,11 @@
+block('datetime')(
+    tag()('time'),
+
+    js()(true),
+
+    attrs()(function() {
+        return {
+            datetime : this.ctx.val
+        };
+    })
+)

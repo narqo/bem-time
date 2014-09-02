@@ -1,0 +1,16 @@
+block('reltime').def()(function() {
+    var ctx = this.ctx,
+        js = apply('js') || true,
+        mix = { block : this.block, js : js },
+        mixBlock = apply('mix');
+
+    if(mixBlock) {
+        mix = [mix].concat(mixBlock);
+    }
+
+    applyCtx({
+        block : 'datetime',
+        mix : mix,
+        val : ctx.val
+    });
+});

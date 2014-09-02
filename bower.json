@@ -1,0 +1,11 @@
+{
+  "name": "bem-time",
+  "version": "0.1.0",
+  "private": true,
+  "authors": [
+    "Vladimir Varankin <nek.narqo@gmail.com> (http://github.com/narqo)"
+  ],
+  "dependencies": {
+    "bem-core" : "bem-core#^2.4.0"
+  }
+}
