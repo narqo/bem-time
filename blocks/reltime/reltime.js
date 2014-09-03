@@ -4,10 +4,11 @@ modules.define('reltime',
 
 var TICK_INTERVAL = 6000,
     instances = [],
-    lastTickTime = 0,
     boundToTick = false,
+    tickTime,
     bindToTick = function() {
         boundToTick = true;
+        tickTime = Date.now();
         tick.on('tick', update).start();
     },
     unbindFromTick = function() {
@@ -15,25 +16,22 @@ var TICK_INTERVAL = 6000,
         boundToTick = false;
     },
     update = function() {
-        var timestamp = Date.now(),
-            tickTime = Math.floor(timestamp / TICK_INTERVAL);
-        if(tickTime > lastTickTime) {
+        var timestamp = Date.now();
+        if(!Math.max(0, TICK_INTERVAL - (timestamp - tickTime))) {
+            tickTime = timestamp;
             scheduleUpdate(function() {
                 var instance, i = 0;
                 while(instance = instances[i++]) {
-                    instance._onTick(timestamp);
+                    instance._onTick(tickTime);
                 }
             });
-            lastTickTime = tickTime;
         }
     },
     scheduleUpdate = requestAnimationFrame ||
         mozRequestAnimationFrame ||
         webkitRequestAnimationFrame ||
         oRequestAnimationFrame ||
-        function(fn) {
-            nextTick(fn.bind(null, Date.now()));
-        };
+        nextTick;
 
 provide(bemDom.decl(this.name, {
     onSetMod : {
