@@ -1,5 +1,5 @@
 modules.define('spec',
-    ['datetime', 'i-bem__dom', 'jquery', 'BEMHTML', 'sinon'],
+    ['Datetime', 'i-bem__dom', 'jquery', 'BEMHTML', 'sinon'],
     function(provide, Datetime, bemDom, $, BEMHTML, sinon) {
 
 describe('select', function() {
@@ -8,9 +8,9 @@ describe('select', function() {
 
     beforeEach(function() {
         datetime = bemDom.init(
-                $(BEMHTML.apply({ block : 'datetime', val : datetimeVal })))
+                $(BEMHTML.apply({ block : 'Datetime', val : datetimeVal })))
             .appendTo('body')
-            .bem('datetime');
+            .bem('Datetime');
     });
 
     afterEach(function() {

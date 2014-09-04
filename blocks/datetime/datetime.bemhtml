@@ -1,4 +1,4 @@
-block('datetime')(
+block('Datetime')(
     tag()('time'),
     js()(true),
     attrs()(function() {

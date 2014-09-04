@@ -1,4 +1,4 @@
-block('reltime').def()(function() {
+block('Reltime').def()(function() {
     var ctx = this.ctx,
         js = apply('js') || true,
         mix = { block : this.block, js : js },
@@ -9,7 +9,7 @@ block('reltime').def()(function() {
     }
 
     applyCtx({
-        block : 'datetime',
+        block : 'Datetime',
         mix : mix,
         title : json.title,
         val : ctx.val

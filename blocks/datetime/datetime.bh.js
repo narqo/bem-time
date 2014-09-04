@@ -1,5 +1,5 @@
 module.exports = function(bh) {
-    bh.match('datetime', function(ctx, json) {
+    bh.match('Datetime', function(ctx, json) {
         ctx
             .tag('time')
             .js(true)

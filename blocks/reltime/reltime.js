@@ -1,28 +1,28 @@
-modules.define('reltime',
-    ['i-bem__dom', 'tick', 'next-tick', 'datetime'],
-    function(provide, bemDom, tick, nextTick, _) {
+modules.define('Reltime',
+    ['i-bem__dom', 'tick', 'next-tick', 'Datetime'],
+    function(provide, bemDom, tick, nextTick, Datetime) {
 
 var TICK_INTERVAL = 6000,
     instances = [],
     boundToTick = false,
-    tickTime,
+    lastTime = 0,
     bindToTick = function() {
         boundToTick = true;
-        tickTime = Date.now();
         tick.on('tick', update).start();
     },
     unbindFromTick = function() {
         tick.un('tick', update).stop();
         boundToTick = false;
+        lastTime = 0;
     },
     update = function() {
-        var timestamp = Date.now();
-        if(!Math.max(0, TICK_INTERVAL - (timestamp - tickTime))) {
-            tickTime = timestamp;
+        var now = Date.now();
+        if(now - lastTime - TICK_INTERVAL >= 0) {
+            lastTime = now;
             scheduleUpdate(function() {
                 var instance, i = 0;
                 while(instance = instances[i++]) {
-                    instance._onTick(tickTime);
+                    instance._onTick(lastTime);
                 }
             });
         }
@@ -37,8 +37,8 @@ provide(bemDom.decl(this.name, {
     onSetMod : {
         'js' : {
             'inited' : function() {
-                this._datetime = this.findBlockOn('datetime');
-                boundToTick || (bindToTick());
+                this._datetime = this.findBlockOn('Datetime');
+                boundToTick || bindToTick();
                 instances.push(this);
             },
 
@@ -60,8 +60,8 @@ provide(bemDom.decl(this.name, {
     },
 
     _onTick : function(timestamp) {
-        // TODO: format + update content
-        this.domElem.text(timestamp);
+        // TODO: format content
+        this._datetime.setContent(timestamp);
         this.emit('tick');
     }
 }));

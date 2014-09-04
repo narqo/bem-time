@@ -1,13 +1,12 @@
-/** @module datetime */
-
-modules.define('datetime', ['i-bem__dom'], function(provide, bemDom) {
+/** @module Datetime */
+modules.define('Datetime', ['i-bem__dom'], function(provide, bemDom) {
 
 /**
  * @export
- * @class datetime
+ * @class Datetime
  * @bem
  */
-provide(bemDom.decl(this.name, /** @lends datetime.prototype */{
+provide(bemDom.decl(this.name, /** @lends Datetime.prototype */{
     onSetMod : {
         'js' : {
             'inited' : function() {
@@ -26,7 +25,7 @@ provide(bemDom.decl(this.name, /** @lends datetime.prototype */{
 
     /**
      * @param {Date|String} val Date object or ISO 8601 formatted timestamp
-     * @returns {datetime} this
+     * @returns {Datetime} this
      */
     setVal : function(val) {
         if(typeof val === 'string') {
@@ -42,11 +41,21 @@ provide(bemDom.decl(this.name, /** @lends datetime.prototype */{
         return this;
     },
 
+    /**
+     * Sets the content of the block
+     * @param {String} content
+     * @returns {Datetime} this
+     */
+    setContent : function(content) {
+        this.domElem.text(content);
+        return this;
+    },
+
     _parseStrVal : function(val) {
         val = new Date(Date.parse(val));
         return (val && !isNaN(val))? val : null;
     }
-}, /** @lends datetime */{
+}, /** @lends Datetime */{
     live : true
 }));
 

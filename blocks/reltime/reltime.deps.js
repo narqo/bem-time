@@ -1,7 +1,7 @@
 ({
     mustDeps : { block : 'i-bem', elems : 'dom' },
     shouldDeps : [
-        'datetime',
+        'Datetime',
         'tick'
     ]
 })

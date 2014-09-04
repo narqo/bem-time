@@ -8,19 +8,14 @@ var path = require('path'),
     bh = require('enb-bh/techs/bh-server'),
     html = require('enb-bh/techs/html-from-bemjson'),
     modules = require('enb-modules/techs/prepend-modules'),
-    js = require('enb-diverse-js/techs/browser-js');
+    js = require('enb-diverse-js/techs/browser-js'),
+
+    SRC_PATH_RE = /(\w+)\.(tests|examples)\/(\w+)\.bemjson\.js$/;
 
 module.exports = make;
 
 function make(config) {
-    config.node('tests/reltime/simple', function(nodeConfig) {
-        var src = 'blocks/reltime/reltime.tests/simple.bemjson.js',
-            simpleSrc = path.relative(nodeConfig.getNodePath(), config.resolvePath(src)),
-            tech = addTech.bind(null, nodeConfig);
-
-        tech(fileProvider, { target : simpleSrc });
-        tech(fileCopy, { sourceTarget : simpleSrc, destTarget : '?.bemjson.js' });
-    });
+    createNode(config, 'blocks/Reltime/Reltime.tests/simple.bemjson.js');
 
     config.nodes('tests/*/*', function(nodeConfig) {
         var tech = addTech.bind(null, nodeConfig);
@@ -39,8 +34,27 @@ function make(config) {
     });
 }
 
+function createNode(config, src) {
+    var nodeName = srcPathToNodeName(src);
+    config.node(nodeName, function(nodeConfig) {
+        var srcTarget = path.relative(nodeConfig.getNodePath(), config.resolvePath(src)),
+            tech = addTech.bind(null, nodeConfig);
+
+        tech(fileProvider, { target : srcTarget });
+        tech(fileCopy, { sourceTarget : srcTarget, destTarget : '?.bemjson.js' });
+    });
+}
+
 function addTech(nodeConfig, tech, opts) {
     nodeConfig.addTech(opts? [tech, opts] : tech);
+}
+
+function srcPathToNodeName(src) {
+    var nodeName = '';
+    src.replace(SRC_PATH_RE, function(_, bemItem, type, name) {
+        nodeName = [type, bemItem, name].join(path.sep);
+    });
+    return nodeName;
 }
 
 function getLevels(config) {
