@@ -1,5 +1,46 @@
 (function() {
 
+/**
+ * @exports
+ * @param {String} format
+ * @param {Number|Date} datetime
+ * @returns {String}
+ */
+function fmttime(format, datetime) {
+    typeof datetime === 'number' && (datetime = new Date(datetime));
+
+    var time = datetime.getTime(),
+        res;
+
+    if(format === '%v') {
+        res = getVagueTime(time);
+        if(res) {
+            return res;
+        }
+        // TODO: default format?
+        format = '%d %B %Y';
+    }
+
+    return format.replace(/%([%BdHmMYyS])/g, function(_, c) {
+        switch(c) {
+
+        case '%':
+            return '%';
+
+        case 'B':
+        case 'd':
+        case 'H':
+        case 'm':
+        case 'M':
+        case 'S':
+        case 'Y':
+        case 'y':
+            // TODO
+
+        }
+    });
+}
+
 var SECONDS = 1000,
     MINUTES = 60,
     HOURS = 60,
@@ -8,7 +49,7 @@ var SECONDS = 1000,
     MONTHS = 30,
     YEARS = 12;
 
-function vagueTime(date) {
+function getVagueTime(date) {
     var delta = Date.now() - date,
         ms = Math.abs(delta),
         sec = Math.ceil(ms / SECONDS);
@@ -50,42 +91,6 @@ function pad(num, len) {
     return (Array(len).join('0') + str).slice(-len);
 }
 */
-
-/**
- * @param {String} format
- * @param {Number|Date} datetime
- */
-function fmttime(format, datetime) {
-    typeof datetime === 'number' && (datetime = new Date(datetime));
-
-    var time = datetime.getTime(),
-        res;
-    format === '%v' && (res = vagueTime(time));
-    if(res) {
-        return res;
-    } else {
-        format = '%d %B %Y'
-    }
-
-    return format.replace(/%([%BdHmMYyS])/g, function(_, c) {
-        switch(c) {
-
-        case '%':
-            return '%';
-
-        case 'B':
-        case 'd':
-        case 'H':
-        case 'm':
-        case 'M':
-        case 'S':
-        case 'Y':
-        case 'y':
-            // TODO
-
-        }
-    });
-}
 
 modules.define('fmtTime', function(provide) {
     provide(fmttime);
