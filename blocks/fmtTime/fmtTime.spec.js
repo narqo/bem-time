@@ -1,7 +1,42 @@
 modules.define('spec', ['fmtTime', 'sinon'], function(provide, fmtTime, sinon) {
 
 describe('fmtTime', function() {
-    describe('Vague time', function() {
+    describe('General formats', function() {
+        var testTime = new Date('2014-09-10T12:04:45+0400'),
+            testCases = {
+                '%' : ['%',   'literal %'],
+                //'A' : ['',    'full weekday name'],
+                //'a' : ['',    'abbreviated weekday name'],
+                //'B' : ['',    'full month name'],
+                //'b' : ['',    'abbreviated month name'],
+                'C' : ['20',  'first 2 digits of year as a decimal number'],
+                'd' : ['10',  'day of the month as a decimal number'],
+                'H' : ['12',  '24 clock hour as a decimal number'],
+                //'I' : ['',    '12 clock hour as a decimal number'],
+                //'L' : ['000', 'millisecond of the second'],
+                'M' : ['04',  'minute as a decimal number'],
+                'm' : ['09',  'month as a decimal number'],
+                'S' : ['45',  'second as a decimal number'],
+                's' : ['1410336285000', 'seconds since 1970'],
+                'Y' : ['2014', 'year as a 4 digit decimal number'],
+                'y' : ['14', 'last 2 digits of year as a decimal number']
+            };
+
+        Object.keys(testCases).forEach(function(char) {
+            var test = testCases[char],
+                format = '%' + char,
+                testRes = test[0],
+                testDesc =test[1];
+
+            describe(format, function() {
+                it('should return ' + testDesc, function() {
+                    fmtTime(format, testTime).should.be.equal(testRes);
+                })
+            })
+        });
+    });
+
+    describe('%v (vague time format)', function() {
         var testTime = new Date('2014-09-14T12:00:00+0400'),
             testCases = {
                 '2014-09-14' : {
@@ -62,7 +97,10 @@ describe('fmtTime', function() {
                     '12:00:00' : '26 дн. назад'
                 },
                 '2014-10-14' : {
-                    '12:00:00' : '30 дн. назад'
+                    '12:00:00' : '14.09.2014, 12:00'
+                },
+                '2015-01-14' : {
+                    '12:00:00' : '14.09.2014, 12:00'
                 }
             };
 

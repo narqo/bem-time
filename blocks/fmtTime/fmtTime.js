@@ -37,15 +37,19 @@ function fmttime(format, datetime) {
             return '%';
         case 'A':
             // TODO: full weekday name, e.g. Friday (locale dependent)
+            break;
         case 'a':
             // TODO: abbreviated weekday name, e.g. Fri (locale dependent)
+            break;
         case 'B':
             // TODO: full month name, e.g. October (locale dependent)
+            break;
         case 'b':
             // TODO: abbreviated month name, e.g. Oct (locale dependent)
+            break;
         case 'C':
             // first 2 digits of year as a decimal number (range [00,99])
-            return year.slice(0, 2);
+            return String(year).slice(0, 2);
         case 'd':
             // day of the month as a decimal number (range [01,31])
             return pad(date, 2);
@@ -54,20 +58,22 @@ function fmttime(format, datetime) {
             return pad(hour, 2);
         case 'I':
             // TODO: hour as a decimal number, 12 hour clock (range [01,12])
+            break;
         case 'L':
             // millisecond of the second (000..999)
             return pad(ms, 3);
-        case 'm':
-            // month as a decimal number (range [01,12])
-            return pad(month + 1, 2);
         case 'M':
             // minute as a decimal number (range [00,59])
             return pad(min, 2);
+        case 'm':
+            // month as a decimal number (range [01,12])
+            return pad(month + 1, 2);
         case 'S':
             // second as a decimal number (range [00,60])
             return pad(sec, 2);
         case 's':
-            return time;
+            // seconds since 1970
+            return String(time);
         case 'Y':
             // year as a 4 digit decimal number
             return year;
