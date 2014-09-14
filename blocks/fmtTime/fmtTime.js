@@ -18,24 +18,62 @@ function fmttime(format, datetime) {
             return res;
         }
         // TODO: default format?
-        format = '%d %B %Y';
+        format = '%d.%m.%Y, %H:%M';
     }
 
-    return format.replace(/%([%BdHmMYyS])/g, function(_, c) {
+    var ms = datetime.getMilliseconds(),
+        sec = datetime.getSeconds(),
+        min = datetime.getMinutes(),
+        hour = datetime.getHours(),
+        date = datetime.getDate(),
+        month = datetime.getMonth(),
+        year = datetime.getFullYear();
+
+    return format.replace(/%([%AaBbCdHILMmSsYy])/g, function(_, c) {
         switch(c) {
 
         case '%':
+            // literal %. The full conversion specification must be %%
             return '%';
-
+        case 'A':
+            // TODO: full weekday name, e.g. Friday (locale dependent)
+        case 'a':
+            // TODO: abbreviated weekday name, e.g. Fri (locale dependent)
         case 'B':
+            // TODO: full month name, e.g. October (locale dependent)
+        case 'b':
+            // TODO: abbreviated month name, e.g. Oct (locale dependent)
+        case 'C':
+            // first 2 digits of year as a decimal number (range [00,99])
+            return year.slice(0, 2);
         case 'd':
+            // day of the month as a decimal number (range [01,31])
+            return pad(date, 2);
         case 'H':
+            // hour as a decimal number, 24 hour clock (range [00-23])
+            return pad(hour, 2);
+        case 'I':
+            // TODO: hour as a decimal number, 12 hour clock (range [01,12])
+        case 'L':
+            // millisecond of the second (000..999)
+            return pad(ms, 3);
         case 'm':
+            // month as a decimal number (range [01,12])
+            return pad(month + 1, 2);
         case 'M':
+            // minute as a decimal number (range [00,59])
+            return pad(min, 2);
         case 'S':
+            // second as a decimal number (range [00,60])
+            return pad(sec, 2);
+        case 's':
+            return time;
         case 'Y':
+            // year as a 4 digit decimal number
+            return year;
         case 'y':
-            // TODO
+            // last 2 digits of year as a decimal number (range [00,99])
+            return pad(year % 100, 2);
 
         }
     });
@@ -84,13 +122,10 @@ function getVagueTime(date) {
     }
 }
 
-/*
 function pad(num, len) {
     num = String(num);
-    len = len - num.length + 1;
-    return (Array(len).join('0') + str).slice(-len);
+    return (Array(len).join('0') + num).slice(-len);
 }
-*/
 
 modules.define('fmtTime', function(provide) {
     provide(fmttime);
