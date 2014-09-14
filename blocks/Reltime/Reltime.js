@@ -1,6 +1,6 @@
 modules.define('Reltime',
-    ['i-bem__dom', 'tick', 'next-tick', 'Datetime'],
-    function(provide, bemDom, tick, nextTick, Datetime) {
+    ['i-bem__dom', 'tick', 'next-tick', 'Datetime', 'fmtTime'],
+    function(provide, bemDom, tick, nextTick, Datetime, fmtTime) {
 
 var TICK_INTERVAL = 6000,
     instances = [],
@@ -59,9 +59,13 @@ provide(bemDom.decl(this.name, {
         return this;
     },
 
+    setContent : function(content) {
+        this._datetime.setContent(content);
+        return this;
+    },
+
     _onTick : function(timestamp) {
-        // TODO: format content
-        this._datetime.setContent(timestamp);
+        this.setContent(fmtTime('%v', this.getVal()));
         this.emit('tick');
     }
 }));

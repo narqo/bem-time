@@ -12,6 +12,9 @@ provide(bemDom.decl(this.name, /** @lends Datetime.prototype */{
             'inited' : function() {
                 // `datetime` must contains ISO 8601 formatted timestamp
                 this._val = this._parseStrVal(this.domElem.attr('datetime'));
+                // we cache content of the block to prevent unnecessary
+                // DOM changes inside `Datetime#updateContent()`
+                this._content = this.domElem.text();
             }
         }
     },
@@ -47,7 +50,9 @@ provide(bemDom.decl(this.name, /** @lends Datetime.prototype */{
      * @returns {Datetime} this
      */
     setContent : function(content) {
-        this.domElem.text(content);
+        if(this._content !== content) {
+            this.domElem.text(this._content = content);
+        }
         return this;
     },
 
