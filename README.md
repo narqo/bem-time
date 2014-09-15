@@ -24,11 +24,11 @@ fmtTime('%d.%m.%Y', Date.now());
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | format | `String` | Format string (see "[format string](#formatstring)" below) |
-| date | `Number` or `Date` | Date to format. May be a `Date` object or a number a of seconds since the Epoch ("UNIX time") |
+| date | `Number` or `Date` | Date to format. May be a `Date` object or a number of seconds since the Epoch ("UNIX time") |
 
-Block implemented in several technologies:
+Block is implemented in several technologies:
 
-- as JavaScript module:
+- as a JavaScript module:
 
 ~~~js
 modules.require(['fmtTime'], function(fmtTime) {
@@ -36,7 +36,7 @@ modules.require(['fmtTime'], function(fmtTime) {
 });
 ~~~
 
-- as BEMHTML helper method
+- as a BEMHTML helper method
 
 ~~~js
 block('my-block').content(function() {
@@ -46,7 +46,7 @@ block('my-block').content(function() {
 // <div class="my-block">02.09.2014</div>
 ~~~
 
-- as bh helper method (**TODO: not implemented yet**):
+- as a bh helper method (**TODO: not implemented yet**):
 
 ~~~js
 bh.match('my-block', function(ctx, json) {
