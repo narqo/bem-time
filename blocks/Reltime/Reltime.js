@@ -59,13 +59,13 @@ provide(bemDom.decl(this.name, {
         return this;
     },
 
-    setContent : function(content) {
+    _setContent : function(content) {
         this._datetime.setContent(content);
         return this;
     },
 
     _onTick : function(timestamp) {
-        this.setContent(fmtTime('%v', this.getVal()));
+        this._setContent(fmtTime('%v', this.getVal()));
         this.emit('tick');
     }
 }));
