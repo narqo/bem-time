@@ -58,9 +58,9 @@ bh.match('my-block', function(ctx, json) {
 
 #### Format string
 
-Format string is a subset of format directives used in [strftime][strftime]
-with addition `%v` directive to display date in "Vague time<b>*</b>" format,
-e.g. "one minute ago":
+Format string is a subset of format directives used in [strftime][strftime],
+with additional `%v` directive which is used to display a date in 
+"Vague time<b>*</b>" format. E.g. "one minute ago":
 
 ~~~js
 fmtTime('%v', new Date());          // "just now"
