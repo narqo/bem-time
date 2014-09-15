@@ -7,14 +7,13 @@ A simple [BEM][beminfo] library to work with date and time.
 
 `bem-time` provides the following pack of blocks:
 
-- [fmtTime](#fmtTime)
-- [Datetime](#Datetime)
-- [Reltime](#Reltime)
+- [fmtTime](#fmttime)
+- [Datetime](#datetime)
+- [Reltime](#reltime)
 
-<a id="fmtTime"></a>
 ### `fmtTime`
 
-Formats the date according to the given [format string](#fmtTimeFormatstring).
+Formats the date according to the given [format string](#formatstring).
 
 ~~~js
 fmtTime('%d.%m.%Y', Date.now());
@@ -24,7 +23,7 @@ fmtTime('%d.%m.%Y', Date.now());
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| format | `String` | Format string (see "[format string](#fmtTimeFormatstring)" below) |
+| format | `String` | Format string (see "[format string](#formatstring)" below) |
 | date | `Number` or `Date` | Date to format. May be a `Date` object or a number a of seconds since the Epoch ("UNIX time") |
 
 Block implemented in several technologies:
@@ -57,7 +56,6 @@ bh.match('my-block', function(ctx, json) {
 // <div class="my-block">02.09.2014</div>
 ~~~
 
-<a id="fmtTimeFormatstring"></a>
 #### Format string
 
 Format string is a subset of format directives used in [strftime][strftime]
@@ -72,7 +70,6 @@ fmtTime('%v', new Date()-3600000);  // "one h. ago"
 
 \* **Note**: "Vague time" is still under development.
 
-<a id="Datetime"></a>
 ### `Datetime`
 
 Displays the given date using HTML5 `<time>` element.
