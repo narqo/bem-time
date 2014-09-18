@@ -46,7 +46,7 @@ block('my-block').content(function() {
 // <div class="my-block">02.09.2014</div>
 ~~~
 
-- as a bh helper method (**TODO: not implemented yet**):
+- as a bh helper method
 
 ~~~js
 bh.match('my-block', function(ctx, json) {
@@ -59,7 +59,7 @@ bh.match('my-block', function(ctx, json) {
 #### Format string
 
 Format string is a subset of format directives used in [strftime][strftime],
-with additional `%v` directive which is used to display a date in 
+with additional `%v` directive which is used to display a date in
 "Vague time<b>*</b>" format. E.g. "one minute ago":
 
 ~~~js

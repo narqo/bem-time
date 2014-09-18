@@ -21,6 +21,7 @@ module.exports = function(config) {
 
 function createTestsNodes(config) {
     createBemjsonNode(config, 'blocks/Reltime/Reltime.tests/simple.bemjson.js');
+    createBemjsonNode(config, 'blocks/fmtTime/fmtTime.tests/simple.bemjson.js');
 
     config.nodes('tests/*/*', function(nodeConfig) {
         var tech = addTech(nodeConfig);

@@ -1,0 +1,3 @@
+block('test').content()(function() {
+    return this.fmtTime('Дата из BEJSON: %d-%m-%Y', new Date(this.ctx.content));
+})
