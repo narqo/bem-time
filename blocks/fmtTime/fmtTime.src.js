@@ -57,8 +57,8 @@ function fmtTime(format, datetime) {
             // hour as a decimal number, 24 hour clock (range [00-23])
             return pad(hour, 2);
         case 'I':
-            // TODO: hour as a decimal number, 12 hour clock (range [01,12])
-            break;
+            // hour as a decimal number, 12 hour clock (range [01,12])
+            return pad(hour === 0 || hour > 12? Math.abs(12 - hour) : hour, 2);
         case 'L':
             // millisecond of the second (000..999)
             return pad(ms, 3);

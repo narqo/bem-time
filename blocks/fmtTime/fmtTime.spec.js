@@ -2,7 +2,7 @@ modules.define('spec', ['fmtTime', 'sinon'], function(provide, fmtTime, sinon) {
 
 describe('fmtTime', function() {
     describe('General formats', function() {
-        var testTime = new Date('2014-09-10T12:04:45+0400'),
+        var testTime = new Date('2014-09-10T12:04:45+0300'),
             testCases = {
                 '%' : ['%',   'literal %'],
                 //'A' : ['',    'full weekday name'],
@@ -12,12 +12,12 @@ describe('fmtTime', function() {
                 'C' : ['20',  'first 2 digits of year as a decimal number'],
                 'd' : ['10',  'day of the month as a decimal number'],
                 'H' : ['12',  '24 clock hour as a decimal number'],
-                //'I' : ['',    '12 clock hour as a decimal number'],
+                'I' : ['12',  '12 clock hour as a decimal number'],
                 //'L' : ['000', 'millisecond of the second'],
                 'M' : ['04',  'minute as a decimal number'],
                 'm' : ['09',  'month as a decimal number'],
                 'S' : ['45',  'second as a decimal number'],
-                's' : ['1410336285000', 'seconds since 1970'],
+                's' : ['1410339885000', 'seconds since 1970'],
                 'Y' : ['2014', 'year as a 4 digit decimal number'],
                 'y' : ['14', 'last 2 digits of year as a decimal number']
             };
@@ -31,13 +31,14 @@ describe('fmtTime', function() {
             describe(format, function() {
                 it('should return ' + testDesc, function() {
                     fmtTime(format, testTime).should.be.equal(testRes);
-                })
-            })
+                });
+            });
         });
     });
 
     describe('%v (vague time format)', function() {
-        var testTime = new Date('2014-09-14T12:00:00+0400'),
+        var testTime = new Date('2014-09-14T12:00:00+0300'),
+            tzOffset = testTime.getTimezoneOffset(),
             testCases = {
                 '2014-09-14' : {
                     '12:00:05' : 'только что',
@@ -109,12 +110,14 @@ describe('fmtTime', function() {
 
             Object.keys(dateCase).forEach(function(time) {
                 var datetime = date + 'T' + time,
-                    now = new Date(datetime + '+0400').getTime(),
+                    fakeNow = new Date(datetime + '+0000'),
                     clock;
+
+                fakeNow.setMinutes(tzOffset + fakeNow.getMinutes());
 
                 describe(datetime, function() {
                     before(function() {
-                        clock = sinon.useFakeTimers(now);
+                        clock = sinon.useFakeTimers(fakeNow.getTime());
                     });
 
                     after(function() {
