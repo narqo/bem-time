@@ -1,5 +1,3 @@
-(function() {
-
 /**
  * @exports
  * @param {String} format
@@ -132,7 +130,3 @@ function pad(num, len) {
     num = String(num);
     return (Array(len).join('0') + num).slice(-len);
 }
-
-return fmtTime;
-
-}());
