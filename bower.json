@@ -9,6 +9,6 @@
     "bem-core": "bem-core#^2.4.0"
   },
   "devDependencies": {
-    "bem-pr": "~0.10.0"
+    "bem-pr": "~0.11.0"
   }
 }
